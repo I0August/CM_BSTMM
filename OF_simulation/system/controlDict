@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     multiphaseEulerFoam;
+
+startFrom       startTime;
+
+startTime       99.3;
+
+stopAt          endTime;
+
+endTime         100;
+
+deltaT          1e-6;
+
+writeControl    adjustableRunTime;
+
+writeInterval   0.1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   7;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.8;
+
+maxDeltaT       1;
+
+functions
+{
+    #includeFunc surfaceInterpolate("U.water")
+    #includeFunc surfaceInterpolate("alpha.water")
+    #includeFunc writeCellVolumes
+    #includeFunc writeCellCentres
+    fieldAverage
+    {
+        type                fieldAverage;
+        libs                ("libfieldFunctionObjects.so");
+
+        writeControl        writeTime;
+
+        timeStart           70;
+        timeEnd             100;
+        mean                yes;
+        prime2Mean          no;
+
+        fields              (U.water alpha.water surfaceInterpolate(U.water) surfaceInterpolate(alpha.water) phi phi.water p T.water epsilon.water);
+    }
+}
+
+
+OptimisationSwitches
+{
+
+    //- Parallel IO file handler
+    // uncollated (default), collated or masterUncollated
+    fileHandler uncollated;
+
+    //- collated: thread buffer size for queued file writes.
+    // If set to 0 or not sufficient for the file size threading is not used.
+    // Default: 2e9
+    maxThreadFileBufferSize 2e9;
+
+    //- masterUncollated: non-blocking buffer size.
+    // If the file exceeds this buffer size scheduled transfer is used.
+    // Default: 2e9
+    maxMasterFileBufferSize 2e9;
+};
+
+// ************************************************************************* //

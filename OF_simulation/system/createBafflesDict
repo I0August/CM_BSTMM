@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      createBafflesDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Whether to convert internal faces only (so leave boundary faces intact).
+// This is only relevant if your face selection type can pick up boundary
+// faces.
+internalFacesOnly true;
+
+fields true;
+
+// Baffles to create.
+baffles
+{
+    bladeFaces
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    blades;
+
+        owner
+        {
+            name            bladeFaces_master;
+            type            wall;
+            
+            patchFields
+            {
+                #include    "bafflesPatchFields"
+            }
+        }
+        neighbour
+        {
+            name        bladeFaces_slave;
+            $owner;
+        }
+        
+    }
+    
+    baffleFaces
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    baffles;
+
+        owner
+        {
+            name            baffleFaces_master;
+            type            wall;
+            
+            patchFields
+            {
+                #include    "bafflesPatchFields"
+            }
+        }
+        
+        neighbour
+        {
+            name        baffleFaces_slave;
+            $owner;
+        }
+    }
+    
+    dishFaces
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    dishes;
+
+        owner
+        {
+            name            dishFaces_master;
+            type            wall;
+            
+            patchFields
+            {
+                #include    "bafflesPatchFields"
+            }
+        }
+        neighbour
+        {
+            name        dishFaces_slave;
+            $owner;
+        }
+        
+    }
+}
+
+
+
+
+// ************************************************************************* //

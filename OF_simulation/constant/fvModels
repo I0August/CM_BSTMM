@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fvModels;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+sparger
+{
+    type            semiImplicitSource;
+
+    timeStart       1;
+    duration        100;
+
+    selectionMode   cellSet;
+    cellSet         injection1;
+
+    volumeMode      absolute;
+
+    sources
+    {
+	thermo:rho.air
+	{
+	  explicit  2.22e-2; // kg/s
+	  implicit  0;
+	}
+
+	U.air
+	{
+          explicit  (0 -1.0e-6 0); // kg*m/s^2
+	  implicit  0;
+	}
+
+	e.air
+	{
+	  explicit  90;  // kg*m^2/s^3
+	  implicit  0;
+	}
+    }
+}
+
+
+// ************************************************************************* //

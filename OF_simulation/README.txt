@@ -1,0 +1,1 @@
+Note that: polymesh directory is not included, instead gmsh file (.geo) is provided. The user need to use openFoam method (run runMesh.sh) to construct OF mesh directory constant/polymesh. Please contact itpromma@outlook.com for more information.

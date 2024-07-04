@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 101325;
+
+boundaryField
+{
+
+    wall
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    rod
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    rodRotatingZone
+    {
+        type            fixedFluxPressure;
+        gradient        uniform 0;
+        value           uniform 101325;
+    }
+    top
+    {
+        type            prghPressure;
+        p               uniform 101325;
+        value           uniform 101325;
+        rho             rho;
+    }
+}
+
+
+// ************************************************************************* //
